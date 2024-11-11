@@ -1,0 +1,388 @@
+openapi: '3.0.3'
+info:
+  title: API Kasir
+  version: '1.0'
+servers:
+  - url: http://localhost:5000
+tags:
+  - name: Admin
+    description: Admin API
+  - name: Product
+    description: Product API
+  - name: Order
+    description: Order API
+  - name: Detail Order
+    description: Detail Order API
+
+paths:
+  /api/admin/register:
+    post:
+      tags:
+        - Admin
+      summary: Register Admin by Super Admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                role:
+                  type: string
+      responses:
+        '201':
+          description: Register Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 201
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    $ref: '#/components/schemas/RegisterUserSuccess'
+        '400':
+          description: Register Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: Register Failed
+
+  /api/admin/login:
+    post:
+      tags:
+        - Admin
+      summary: Login Admin and Super Admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Login Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+        '400':
+          description: Login Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: Login Failed
+
+  /api/admin/current:
+    get:
+      tags:
+        - Admin 
+      summary: Get Data Current Admin
+      responses:
+        '200':
+          description: Get Data Admin Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+        '400':
+          description: Get Data Admin Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: Get Data Admin Failed
+
+    patch:
+      tags:
+        - Admin   
+      summary: Update Data Admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                old_password:
+                  type: string
+                new_password:
+                  type: string
+      responses:
+        '200':
+          description: Update Data Admin Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Update Data Admin Success
+                  data:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+                      email:
+                        type: string
+        '400':
+          description: Update Data Admin Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: Update Data Admin Failed
+
+  /api/admin:
+    get:
+      tags:
+        - Admin 
+      summary: Get Data Admin by Super Admin
+      responses:
+        '200':
+          description: Get Data Admin Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        username:
+                          type: string
+                        email:
+                          type: string
+                        role:
+                          type: string
+        '400':
+          description: Get Data Admin Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: Get Data Admin Failed
+
+    patch:
+      tags:
+        - Admin   
+      summary: Update Data Admin by Super Admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                old_password:
+                  type: string
+                new_password:
+                  type: string
+                role:
+                  type: string
+      responses:
+        '200':
+          description: Update Data Admin Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Update Data Admin Success
+                  data:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+        '400':
+          description: Update Data Admin Failed
+          content:          
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: Update Data Admin Failed
+
+  /api/admin/logout:
+    delete:
+      tags:
+        - Admin
+      summary: Logout Admin and Super Admin
+      responses:
+        '200':
+          description: Logout Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Logout Success
+        '400':
+          description: Logout Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: Logout Failed
+
+components:
+  schemas:
+    RegisterUserSuccess:
+      type: object
+      required:
+        - username
+        - email
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+
+  
+
