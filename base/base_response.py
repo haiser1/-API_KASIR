@@ -2,7 +2,7 @@ class BaseResponse:
     def __init__(self):
         pass
 
-    def response_success(self, code: int, status: str, data: dict):
+    def response_success(self, code: int, status: str, data: any):
         return {
             'code': code,
             'status': status,

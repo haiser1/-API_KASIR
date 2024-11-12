@@ -4,6 +4,7 @@ from models.admin import Admin
 from flask import jsonify
 from . import base_response, db
 from validation.admin_validation import UpdateCurrentAdminValidation, UpdateAdminBySupAdminValidation
+import datetime
 
 def get_current_admin_service(admin_id: int) -> dict:
     try:
@@ -82,6 +83,18 @@ def update_admin_by_sup_admin_service(admin_id: int, request_data: dict) -> dict
         return jsonify(base_response.response_success(200, 'success', admin.to_dict())), 200
     except ValidationError as err:
         return jsonify(base_response.response_failed(400, 'failed', err.messages)), 400
+    except Exception as err:
+        print(f'some error: {err}')
+        return jsonify(base_response.response_failed(500, 'failed', 'Internal Server Error')), 500
+    
+def delete_admin_by_sup_admin_service(admin_id: int) -> dict:
+    try:
+        admin = Admin.query.filter_by(id=admin_id, deleted_at=None).first()
+        if admin is None:
+            return jsonify(base_response.response_failed(404, 'failed', 'Admin not found')), 404
+        admin.deleted_at = datetime.datetime.now()
+        db.session.commit()
+        return jsonify(base_response.response_success(200, 'Admin Successfully Deleted', 'Null')), 200
     except Exception as err:
         print(f'some error: {err}')
         return jsonify(base_response.response_failed(500, 'failed', 'Internal Server Error')), 500
