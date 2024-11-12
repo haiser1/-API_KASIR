@@ -1,8 +1,6 @@
 from flask_marshmallow import Marshmallow
 from marshmallow import fields, validate
-from config import app
-
-ma = Marshmallow(app)
+from . import ma
 
 class RegisterValidation(ma.Schema):
     username = fields.String(required=True, validate=validate.Length(min=1, error="Username cannot be empty"))

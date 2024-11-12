@@ -1,21 +1,13 @@
 import bcrypt
-from config import db
+from config import db, JWT_SECRET_KEY
 from models.admin import Admin
-from base.base_response import BaseResponse
+from . import base_response
 import jwt
-import os
-from dotenv import load_dotenv
 from flask import jsonify
 import datetime
 from validation.auth_validation import LoginValidation, RegisterValidation
 from marshmallow import ValidationError
 
-
-load_dotenv()
-
-JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
-
-base_response = BaseResponse()
 def register_admin_service(request_data: dict) -> dict:
     try:
         RegisterValidation().load(request_data)
@@ -30,6 +22,7 @@ def register_admin_service(request_data: dict) -> dict:
     except ValidationError as err:
         return jsonify(base_response.response_failed(400, 'failed', err.messages)), 400
     except Exception as err:
+        print(f'some error: {err}')
         return jsonify(base_response.response_failed(500, 'failed', 'Internal Server Error')), 500
     
 def login_admin_service(request_data: dict) -> dict:
@@ -53,4 +46,5 @@ def login_admin_service(request_data: dict) -> dict:
     except ValidationError as err:
         return jsonify(base_response.response_failed(400, 'failed', err.messages)), 400
     except Exception as err:
+        print(f'some error: {err}')
         return jsonify(base_response.response_failed(500, 'failed', 'Internal Server Error')), 500
