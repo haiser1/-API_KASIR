@@ -6,11 +6,11 @@ class Admin(db.Model):
     email = db.Column(db.String(50), nullable=False)
     password = db.Column(db.String(500), nullable=False)
     role = db.Column(db.Enum('super_admin', 'admin'), nullable=False, default='super_admin')
-    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
-    updated_at = db.column(db.DateTime, nullable=False, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+    created_at = db.Column(db.DateTime,nullable=False, default=db.func.current_timestamp())
+    updated_at = db.Column(db.DateTime,nullable=False, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
     deleted_at = db.Column(db.DateTime, nullable=True)
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             'id': self.id,
             'username': self.username,
@@ -18,6 +18,5 @@ class Admin(db.Model):
             'role': self.role,
             'created_at': self.created_at,
             'updated_at': self.updated_at,
-            'deleted_at': self.deleted_at
         }
     
