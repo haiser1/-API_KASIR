@@ -20,6 +20,8 @@ paths:
       tags:
         - Admin
       summary: Register Admin by Super Admin
+      security:
+        - bearerAuth: []
       requestBody:
         content:
           application/json:
@@ -123,6 +125,8 @@ paths:
       tags:
         - Admin 
       summary: Get Data Current Admin
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Get Data Admin Success
@@ -167,6 +171,8 @@ paths:
       tags:
         - Admin   
       summary: Update Data Admin
+      security:
+        - bearerAuth: []
       requestBody:
         content:
           application/json:
@@ -227,6 +233,8 @@ paths:
       tags:
         - Admin 
       summary: Get Data Admin by Super Admin
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Get Data Admin Success
@@ -273,6 +281,8 @@ paths:
       tags:
         - Admin   
       summary: Update Data Admin by Super Admin
+      security:
+        - bearerAuth: []
       requestBody:
         content:
           application/json:
@@ -332,14 +342,22 @@ paths:
                     type: string
                     example: Update Data Admin Failed
 
-  /api/admin/logout:
     delete:
       tags:
         - Admin
-      summary: Logout Admin and Super Admin
+      summary: Delete Admin by Super Admin
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 1
       responses:
         '200':
-          description: Logout Success
+          description: Delete Admin Success
           content:
             application/json:
               schema:
@@ -353,9 +371,57 @@ paths:
                     example: success
                   message:
                     type: string
-                    example: Logout Success
+                    example: Delete Admin Success
+        '404':
+          description: Delete Admin Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: Admin Not Found
+
+  /api/pruducts:
+    post:
+      tags:
+        - Product
+      summary: Create Pruduct
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestBodyProduct'
+                
+
+      responses:
+        '201':
+          description: Create Pruduct Success
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 201
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    $ref: '#/components/schemas/ResponsePruductSuccess'
+                    
         '400':
-          description: Logout Failed
+          description: Create Pruduct Failed
           content:
             application/json:
               schema:
@@ -369,9 +435,445 @@ paths:
                     example: failed
                   message:
                     type: string
-                    example: Logout Failed
+                    example: Create Pruduct Failed
+    get:
+        tags:
+          - Product
+        summary: Get All Pruduct
+        security:
+        - bearerAuth: []
+        responses:
+          '200':
+            description: Get All Pruduct Success
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    code:
+                      type: integer
+                      example: 200
+                    status:
+                      type: string
+                      example: success
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/ResponsePruductSuccess'
+
+  /api/pruducts/{product_id}:
+    get:
+      tags:
+        - Product
+      summary: Get Pruduct by Id
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: product_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Get Pruduct Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    $ref: '#/components/schemas/ResponsePruductSuccess'
+        '404':
+          description: Get Pruduct Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: Pruduct Not Found
+
+    put:
+      tags:
+        - Product
+      summary: Update Pruduct by Id
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: product_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestBodyProduct'                    
+
+      responses:
+        '200':
+          description: Update Pruduct Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Update Pruduct Success
+                  data:
+                    $ref: '#/components/schemas/ResponsePruductSuccess'
+        '404':
+          description: Update Pruduct Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: Pruduct Not Found
+    delete:
+      tags:
+        - Product
+      summary: Delete Pruduct by Id
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: product_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Delete Pruduct Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Delete Pruduct Success
+        '404':
+          description: Delete Pruduct Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: Pruduct Not Found
+  
+  /api/categories:
+    post:
+      tags:
+        - Category
+      summary: Create Category
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  example: Category 1
+
+      responses:
+        '201':
+          description: Create Category Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 201
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Category 1
+        '400':
+          description: Create Category Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: Create Category Failed
+    get:
+      tags:
+        - Category
+      summary: Get All Category
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Get All Category Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: Category 1
+
+  /api/categories/{category_id}:
+    get:
+      tags: 
+        - Category
+      summary: Get Category by Id
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: category_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Get Category Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Category 1
+        '404':
+          description: Get Category Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: Category Not Found
+
+    put:
+      tags:
+        - Category
+      summary: Update Category by Id
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: category_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  example: Category 1
+
+      responses:
+        '200':
+          description: Update Category Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  status:
+                    type: string
+                  message:
+                    type: string
+                    example: Update Category Success
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Category 1
+        '404':
+          description: Update Category Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: Category Not Found
+
+    delete:
+      tags: 
+        - Category
+      security:
+        - bearerAuth: []
+      summary: Delete Category by Id 
+      parameters:
+        - in: path
+          name: category_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Delete Category Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Delete Category Success
+        '404':
+          description: Delete Category Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: Category Not Found
+
 
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     RegisterUserSuccess:
       type: object
@@ -383,6 +885,50 @@ components:
           type: string
         email:
           type: string
+      
+    ResponsePruductSuccess:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Pruduct 1
+        price:
+          type: number
+          example: 100
+        stock:
+          type: number
+          example: 10
+        categories:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: Category 1
 
-  
+    RequestBodyProduct:
+      type: object
+      required:
+        - name
+        - price
+        - stock
+        - category_id
+      properties:
+        name:
+          type: string
+          example: Pruduct 1
+        price:
+          type: number
+          example: 100
+        stock:
+          type: number
+          example: 10
+        category_id:
+          type: integer
+          example: 1
 
