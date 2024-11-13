@@ -1,15 +1,14 @@
 class BaseResponse:
-    def __init__(self):
-        pass
-
-    def response_success(self, code: int, status: str, data: any):
+    @staticmethod
+    def response_success(code: int, status: str, data: any):
         return {
             'code': code,
             'status': status,
             'data': data
         }
 
-    def response_failed(self, code: int, status: str, message: str):
+    @staticmethod
+    def response_failed(code: int, status: str, message: str):
         return {
             'code': code,
             'status': status,

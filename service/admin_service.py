@@ -26,29 +26,26 @@ def get_all_admin_service() -> dict:
     
 def update_cuurrent_admin_service(admin_id: int, request_data: dict) -> dict:
     try:
-        UpdateCurrentAdminValidation().load(request_data)
+        data = UpdateCurrentAdminValidation().load(request_data)
         admin = Admin.query.filter_by(id=admin_id, deleted_at=None).first()
         if admin is None:
             return jsonify(base_response.response_failed(404, 'failed', 'Admin not found')), 404
-        if 'username' in request_data and request_data['username'] != '':
-            admin.username = request_data['username']
-        if 'email' in request_data and request_data['email'] != '':
-            admin.email = request_data['email']
-        if 'new_password' in request_data and request_data['new_password'] != '':
-            if 'old_password' not in request_data or request_data['old_password'] == '':
-                return jsonify(base_response.response_failed(400, 'failed', 'Old password required')), 400
-            match = bcrypt.checkpw(request_data['old_password'].encode('utf-8'), admin.password.encode('utf-8'))
-            if not match:
-                return jsonify(base_response.response_failed(400, 'failed', 'Old password invalid')), 400
-            admin.password = bcrypt.hashpw(request_data['new_password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-        if 'role' in request_data and request_data['role'] != '':
-            admin.role = request_data['role']
-        if 'old_password' in request_data and request_data['old_password'] != '':
-            match = bcrypt.checkpw(request_data['old_password'].encode('utf-8'), admin.password.encode('utf-8'))
-            if not match:
-                return jsonify(base_response.response_failed(400, 'failed', 'Old password invalid')), 400
+        if data.get('username'):
+            admin.username = data['username']
+        if data.get('email'):
+            admin.email = data['email']
+        if data.get('role'):
+            admin.role = data['role']
         
+        # Jika new_password diberikan, validasi old_password
+        if data.get('new_password'):
+            if not data.get('old_password'):
+                return jsonify(base_response.response_failed(400, 'failed', 'Old password required')), 400
+            if not bcrypt.checkpw(data['old_password'].encode('utf-8'), admin.password.encode('utf-8')):
+                return jsonify(base_response.response_failed(400, 'failed', 'Old password invalid')), 400
+            admin.password = bcrypt.hashpw(data['new_password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
         db.session.commit()
+        
         return jsonify(base_response.response_success(200, 'success', admin.to_dict())), 200
     except ValidationError as err:
         return jsonify(base_response.response_failed(400, 'failed', err.messages)), 400
@@ -58,28 +55,26 @@ def update_cuurrent_admin_service(admin_id: int, request_data: dict) -> dict:
     
 def update_admin_by_sup_admin_service(admin_id: int, request_data: dict) -> dict:
     try:
-        UpdateAdminBySupAdminValidation().load(request_data)
+        data = UpdateAdminBySupAdminValidation().load(request_data)
         admin = Admin.query.filter_by(id=admin_id, deleted_at=None).first()
         if admin is None:
             return jsonify(base_response.response_failed(404, 'failed', 'Admin not found')), 404
-        if 'username' in request_data and request_data['username'] != '':
-            admin.username = request_data['username']
-        if 'email' in request_data and request_data['email'] != '':
-            admin.email = request_data['email']
-        if 'role' in request_data and request_data['role'] != '':
-            admin.role = request_data['role']
-        if 'new_password' in request_data and request_data['new_password'] != '':
-            if 'old_password' not in request_data or request_data['old_password'] == '':
+        if data.get('username'):
+            admin.username = data['username']
+        if data.get('email'):
+            admin.email = data['email']
+        if data.get('role'):
+            admin.role = data['role']
+        
+        # Jika new_password diberikan, validasi old_password
+        if data.get('new_password'):
+            if not data.get('old_password'):
                 return jsonify(base_response.response_failed(400, 'failed', 'Old password required')), 400
-            match = bcrypt.checkpw(request_data['old_password'].encode('utf-8'), admin.password.encode('utf-8'))
-            if not match:
+            if not bcrypt.checkpw(data['old_password'].encode('utf-8'), admin.password.encode('utf-8')):
                 return jsonify(base_response.response_failed(400, 'failed', 'Old password invalid')), 400
-            admin.password = bcrypt.hashpw(request_data['new_password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-        if 'old_password' in request_data and request_data['old_password'] != '':
-            match = bcrypt.checkpw(request_data['old_password'].encode('utf-8'), admin.password.encode('utf-8'))
-            if not match:
-                return jsonify(base_response.response_failed(400, 'failed', 'Old password invalid')), 400
+            admin.password = bcrypt.hashpw(data['new_password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
         db.session.commit()
+        
         return jsonify(base_response.response_success(200, 'success', admin.to_dict())), 200
     except ValidationError as err:
         return jsonify(base_response.response_failed(400, 'failed', err.messages)), 400

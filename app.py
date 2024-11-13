@@ -1,9 +1,13 @@
 from config import app, db
 from routes.auth_route import auth_bp
 from routes.admin_route import admin_bp
+from routes.category_route import category_bp
+from routes.product_route import product_bp
 
 app.register_blueprint(auth_bp)
 app.register_blueprint(admin_bp)
+app.register_blueprint(category_bp)
+app.register_blueprint(product_bp)
 
 
 

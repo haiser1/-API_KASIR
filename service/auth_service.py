@@ -10,12 +10,12 @@ from marshmallow import ValidationError
 
 def register_admin_service(request_data: dict) -> dict:
     try:
-        RegisterValidation().load(request_data)
-        admin = Admin.query.filter_by(email=request_data['email'], deleted_at=None).first()
+        data = RegisterValidation().load(request_data)
+        admin = Admin.query.filter_by(email=data['email'], deleted_at=None).first()
         if admin is not None:
             return jsonify(base_response.response_failed(400, 'failed', 'Email already exist')), 400
-        password = bcrypt.hashpw(request_data['password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-        admin = Admin(username=request_data['username'], email=request_data['email'], password=password, role=request_data['role'])
+        password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        admin = Admin(username=data['username'], email=data['email'], password=password, role=data['role'])
         db.session.add(admin)
         db.session.commit()
         return jsonify(base_response.response_success(200, 'success', admin.to_dict())), 200
@@ -27,9 +27,9 @@ def register_admin_service(request_data: dict) -> dict:
     
 def login_admin_service(request_data: dict) -> dict:
     try:
-        LoginValidation().load(request_data)
-        email = request_data['email']
-        password = request_data['password']
+        data = LoginValidation().load(request_data)
+        email = data['email']
+        password = data['password']
         admin = Admin.query.filter_by(email=email, deleted_at=None).first()
         if admin is None:
             return  jsonify(base_response.response_failed(400, 'failed', 'Email or password invalid')), 400
