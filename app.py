@@ -10,7 +10,6 @@ app.register_blueprint(category_bp)
 app.register_blueprint(product_bp)
 
 
-
 if __name__ == '__main__':
     db.create_all()
-    app.run(debug=True, port=5000)
+    app.run()
