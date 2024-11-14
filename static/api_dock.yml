@@ -1,9 +1,11 @@
 openapi: '3.0.3'
 info:
-  title: API Kasir
+  title: Kasir API Documentation
   version: '1.0'
 servers:
+  - url: https://api-kasir.vercel.app
   - url: http://localhost:5000
+  
 tags:
   - name: Admin
     description: Admin API

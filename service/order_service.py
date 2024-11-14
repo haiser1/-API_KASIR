@@ -12,7 +12,7 @@ def create_order_service(request_data: dict, admin_id: int) -> dict:
             return jsonify(base_response.response_failed(404, 'failed', 'Product not found')), 404
         
         total_price = data['total_amount'] * find_product.price
-        order = Order(user_id=data['user_id'], product_id=data['product_id'], admin_id=admin_id, total_amount=data['total_amount'], total_price=total_price)
+        order = Order(admin_id=admin_id, product_id=data['product_id'], total_amount=data['total_amount'], total_price=total_price)
         db.session.add(order)
         db.session.commit()
         return jsonify(base_response.response_success(201, 'success', order.to_dict())), 201

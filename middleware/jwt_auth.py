@@ -18,7 +18,7 @@ def token_required(f):
         if not token:
             return jsonify(base_response.response_failed(401, 'Unauthorized', 'Token is missing!')), 401
         try:
-            data = jwt.decode(token, JWT_SECRET_KEY, algorithms=['HS256'])
+            data = jwt.decode(token, str(JWT_SECRET_KEY), algorithms=['HS256'])
             current_user = data 
         except jwt.ExpiredSignatureError:
             return jsonify(base_response.response_failed(401, 'Unauthorized', 'Token has expired!')), 401
@@ -37,7 +37,7 @@ def super_admin_required(f):
         if not token:
             return jsonify(base_response.response_failed(401, 'Unauthorized', 'Token is missing!')), 401
         try:
-            data = jwt.decode(token, JWT_SECRET_KEY, algorithms=['HS256'])
+            data = jwt.decode(token, str(JWT_SECRET_KEY), algorithms=['HS256'])
             current_user = data 
         except jwt.ExpiredSignatureError:
             return jsonify(base_response.response_failed(401, 'Unauthorized', 'Token is expired!')), 401
