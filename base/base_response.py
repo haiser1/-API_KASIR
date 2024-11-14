@@ -8,7 +8,7 @@ class BaseResponse:
         }
 
     @staticmethod
-    def response_failed(code: int, status: str, message: str):
+    def response_failed(code: int, status: str, message: any):
         return {
             'code': code,
             'status': status,

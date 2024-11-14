@@ -36,12 +36,12 @@ def login_admin_service(request_data: dict) -> dict:
         if not bcrypt.checkpw(password.encode('utf-8'), admin.password.encode('utf-8')):
             return jsonify(base_response.response_failed(400, 'failed', 'Email or password invalid')), 400
         payload = {
-            'email': admin.email,
+            'username': admin.username,
             'id': admin.id,
             'role': admin.role,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=12)
         }
-        token = jwt.encode(payload, JWT_SECRET_KEY, algorithm='HS256')
+        token = jwt.encode(payload, str(JWT_SECRET_KEY), algorithm='HS256')
         return jsonify(base_response.response_success(200, 'success', token)), 200
     except ValidationError as err:
         return jsonify(base_response.response_failed(400, 'failed', err.messages)), 400

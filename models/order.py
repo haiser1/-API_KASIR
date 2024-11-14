@@ -24,8 +24,18 @@ class Order(db.Model):
             'category_name': self.product.category.name,
             'total_amount': self.total_amount,
             'total_price': self.total_price,
+        }
+
+    def to_dict_full(self):
+        return {
+            'id': self.id,
+            'product_id': self.product_id,
+            'product_name': self.product.name,
+            'product_price': self.product.price,
+            'category_name': self.product.category.name,
+            'total_amount': self.total_amount,
+            'total_price': self.total_price,
             'admin_id': self.admin_id,
-            'admin_username': self.admin.username,
+            'admin_name': self.admin.username,
             'order_date': self.order_date,
-            'created_at': self.created_at,
         }
