@@ -867,6 +867,206 @@ paths:
                     type: string
                     example: Category Not Found
 
+  /api/orders:
+    post:
+      tags:
+        - Order
+      summary: Create Order
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestBodyOrder'
+      responses:
+        '201':
+          description: Create Order Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOrderSuccess'
+        '400':
+          description: Create Order Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: Create Order Failed
+
+    get:
+      tags:
+        - Order
+      summary: Get All Order
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: start_date
+          required: false
+          schema:
+            type: string
+            example: 2022-01-01
+        - in: query
+          name: end_date
+          required: false
+          schema:
+            type: string
+            example: 2022-01-01
+      responses:
+        '200':
+          description: Get All Order Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResponseOrderSuccess'
+
+  /api/orders/{order_id}:
+    get:
+      tags:
+        - Order
+      summary: Get Order by Id
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: order_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Get Order Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOrderSuccess'
+        '404':
+          description: Get Order Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: Order Not Found
+
+    put:
+      tags:
+        - Order
+      summary: Update Order by Id
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: order_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestBodyOrder'
+      responses:
+        '200':
+          description: Update Order Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOrderSuccess'
+        '404':
+          description: Update Order Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: Order Not Found
+
+    delete:
+      tags:
+        - Order
+      summary: Delete Order by Id
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: order_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Delete Order Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Delete Order Success
+        '404':
+          description: Delete Order Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: Order Not Found
 
 components:
   securitySchemes:
@@ -931,4 +1131,39 @@ components:
         category_id:
           type: integer
           example: 1
+
+    RequestBodyOrder:
+      type: object
+      required:
+        - product_id
+        - total_amount
+      properties:
+        product_id:
+          type: integer
+          example: 1
+        total_amount:
+          type: integer
+          example: 1
+
+    ResponseOrderSuccess:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        product_id:
+          type: integer
+          example: 1
+        total_amount:
+          type: integer
+          example: 1
+        order_date:
+          type: string
+          example: 2021-01-01
+        product_name:
+          type: string
+          example: Pruduct 1
+        price:
+          type: number
+          example: 100
 
