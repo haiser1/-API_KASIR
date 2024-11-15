@@ -98,7 +98,7 @@ def delete_order_service(order_id: int) -> dict:
             return jsonify(base_response.response_failed(404, 'failed', 'Order not found')), 404
         order.deleted_at = True
         db.session.commit()
-        return jsonify(base_response.response_success(200, 'success', order.to_dict())), 200
+        return jsonify(base_response.response_success(200, 'Order Successfully Deleted', 'Null')), 200
     except Exception as err:
         print(f'some error: {err}')
         return jsonify(base_response.response_failed(500, 'failed', 'Internal Server Error')), 500
