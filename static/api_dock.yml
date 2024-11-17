@@ -389,7 +389,7 @@ paths:
                     type: string
                     example: Admin Not Found
 
-  /api/pruducts:
+  /api/products:
     post:
       tags:
         - Product
@@ -461,7 +461,7 @@ paths:
                       items:
                         $ref: '#/components/schemas/ResponsePruductSuccess'
 
-  /api/pruducts/{product_id}:
+  /api/products/{product_id}:
     get:
       tags:
         - Product
